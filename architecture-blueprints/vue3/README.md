@@ -18,6 +18,12 @@ It is designed to scale, stay maintainable, and support testing by clearly separ
     - [services/](#services)
     - [types/](#types)
     - [util/](#util)
+  - [Design Patterns](#design-patterns)
+    - [Factory Pattern](#factory-pattern)
+    - [Singleton Pattern](#singleton-pattern)
+    - [Dependency Injection](#dependency-injection)
+    - [Lazy Initialization](#lazy-initialization)
+    - [Chain Of Responibility (Optional)](#chain-of-responibility-optional)
 
 ## Best Practices
 
@@ -79,21 +85,118 @@ export default config;
 
 ### factories/
 
-Factory classes to manage creation of services and repositories.
+Factory classes manage the creation of services and repositories. The `ServiceFactory` is responsible for deciding which repository to inject into the service instance before returning it. The `ServiceFactory` gets it's repository instance from the `RepositoryFactory`, which has a method per repository *(eg. getEventRepository)*, which take as argument the implementation of that repository that you want.
 
-TODO: Link to chapter
+```ts
+// ServiceFactory.ts --Example 1--
+
+import { EventService } from '@/services/EventService';
+import { RepositoryFactory } from '@/factories/RepositoryFactory';
+import { EventRepositoryImplementations } from '@/types/enums/repositories/EventRepositryImplementations'
+
+export class ServiceFactory {
+    private static eventService: EventService;
+
+    // Singleton pattern to ensure there's only one instance of EventService
+    public static getEventService(): EventService {
+        if (!this.eventService) {
+            this.eventService = new EventService(
+                // Get the repository based on a predefined choice (e.g., API)
+                RepositoryFactory.getEventRepository(EventRepositoryImplementations.API)
+            );
+        }
+        return this.eventService;
+    }
+}
+```
+
+```ts
+// ServiceFactory.ts --Example 2--
+
+import { EventService } from '@/services/EventService';
+import { RepositoryFactory } from '@/factories/RepositoryFactory';
+import { EventRepositoryImplementations } from '@/types/enums/repositories/EventRepositryImplementations';
+
+export class ServiceFactory {
+    private static eventService: EventService;
+
+    // Singleton pattern to ensure there's only one instance of EventService
+    public static getEventService(): EventService {
+        if (!this.eventService) {
+            this.eventService = new EventService(
+                // Dynamically decide which repository to use based on some logic
+                RepositoryFactory.getEventRepository(getEventRepositoryImplementation())
+            );
+        }
+        return this.eventService;
+    }
+
+    private static getEventRepositoryImplementation(): EventRepositoryImplementations {
+        // logic to determine which repo implementation to use.
+    }
+}
+```
+
+```ts
+// RepositoryFactory.ts --Example 1--
+
+import { IEventRepository } from '@/repositories/IEventRepository';
+import { APIEventRepository } from '@/repositories/event-repositories/APIEventRepository';
+import { JSONEventRepository } from '@/repositories/event-repositories/JSONEventRepository';
+import { EventRepositoryImplementations } from '@/types/enums/repositories/EventRepositryImplementations';
+
+export class RepositoryFactory {
+    // Map to store already instantiated repositories (enforces Singleton pattern).
+    private static eventRepositories = new Map<EventRepositoryImplementations, IEventRepository>();
+
+    // Map to link repository implementations to their respective classes.
+    // The key is the enum value, and the value is the class constructor.
+    private static eventRepositoriesClassMap = {
+        [EventRepositoryImplementations.API]: APIEventRepository,
+        [EventRepositoryImplementations.JSON]: JSONEventRepository
+    };
+
+    /**
+     * Returns an instance of the requested event repository.
+     * If the repository has already been instantiated, it retrieves the existing instance.
+     * Otherwise, it creates a new instance, stores it, and then returns it.
+     * 
+     * @param implementation - The type of repository to instantiate, specified by the enum.
+     * @returns An instance of the requested repository.
+     * @throws If the specified repository implementation is not found.
+     */
+    public static getEventRepository(implementation: EventRepositoryImplementations): IEventRepository {
+        // Check if the repository instance already exists in the map.
+        if (!this.eventRepositories.has(implementation)) {
+            // Retrieve the repository class constructor from the class map.
+            const RepositoryClass = this.eventRepositoriesClassMap[implementation];
+
+            // If no class is found for the requested implementation, throw an error.
+            if (!RepositoryClass) {
+                throw new Error(`Repository implementation: ${implementation} not found.`);
+            }
+
+            // Instantiate the repository and store it in the map.
+            this.eventRepositories.set(implementation, new RepositoryClass());
+        }
+
+        // Retrieve and return the stored repository instance.
+        return this.eventRepositories.get(implementation)!;
+    }
+}
+```
 
 ### repositories/
 
-Repository classes for data interaction.
+Repositoriy classes handle data interaction, Each repository should have an interface followed by each implementation of that interface.
 
-TODO: Link to chapter
+TODO: add code examples.
 
 ### services/
 
-Service classes that contain the business logic.
+Service classes contain the business logic and interact with repositories to retrieve or manipulate data. The creation of these services are done using the ServiceFactory, under no circomstances should you start manually creating instances of these.
 
-TODO: Link to chapter
+TODO: add code examples.
 
 ### types/
 
@@ -104,3 +207,27 @@ This is where all typescript type declarations should be placed, along with enum
 [`🔗 Wikipedia: "Facade Pattern"`](https://en.wikipedia.org/wiki/Facade_pattern)
 
 This is the place to put all utility funtcions, functions that can be re-used cross components/files. This to avoid code duplication or to abstract away more complex functionality, see the facade design pattern.
+
+## Design Patterns
+
+Below you can find an overview of the design patterns which are the pillars of this architecture, and the reasoning on why and how they are implemented.
+
+### Factory Pattern
+
+[`🔗 Wikipedia: "Factory method pattern"`](https://en.wikipedia.org/wiki/Factory_method_pattern)
+
+### Singleton Pattern
+
+[`🔗 Wikipedia: "Singleton pattern"`](https://en.wikipedia.org/wiki/Singleton_pattern)
+
+### Dependency Injection
+
+[`🔗 Wikipedia: "Dependency injection"`](https://en.wikipedia.org/wiki/Dependency_injection)
+
+### Lazy Initialization
+
+[`🔗 Wikipedia: "Lazy initialization"`](https://en.wikipedia.org/wiki/Lazy_initialization)
+
+### Chain Of Responibility (Optional)
+
+[`🔗 Wikipedia: `]()
