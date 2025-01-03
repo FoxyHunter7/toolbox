@@ -12,6 +12,12 @@ It is designed to scale, stay maintainable, and support testing by clearly separ
     - [Composition API](#composition-api)
     - [Seperation Of Concerns](#seperation-of-concerns)
   - [File Structure](#file-structure)
+    - [data/](#data)
+    - [factories/](#factories)
+    - [repositories/](#repositories)
+    - [services/](#services)
+    - [types/](#types)
+    - [util/](#util)
 
 ## Best Practices
 
@@ -39,13 +45,62 @@ Ensuring that each "module", component, or part of code is solely responsible fo
 
 Below is an overview of the desired file/folder structure within the `src/` folder of your VUE project.
 
-- assets/
-- components/
+- assets/   - *Stores static assets like CSS files, media, ...*
+- components/   - *Vue components, organised as seen fit in the context of the project.*
 - **(new) data/**
 - **(new) factories/**
 - **(new) repositories/**
-- router/
+- router/   - *Vue Router*
 - **(new) services/**
 - **(new) types/**
 - **(new) util/**
-- views/
+- views/    - *The main views of your application.*
+
+### data/
+
+Contains configuration files that may read ".env" values and ensure defaults.
+
+For example:
+
+```ts
+const env = {
+  "APIFQDN": import.meta.env.VITE_API_FQDN,
+  "APIPort": import.meta.env.VITE_API_PORT,
+  "APISecure": import.meta.env.VITE_API_SECURE,
+}
+
+const config = {
+  "REST_URL": `${env.APISecure === "true" ? "https" : "http"}://${env.APIFQDN}:${env.APIPort}/`,
+  "SOCKET_URL": `${env.APISecure === "true"? "wss" : "ws"}://${env.APIFQDN}:${env.APIPort}/`,
+}
+
+export default config;
+```
+
+### factories/
+
+Factory classes to manage creation of services and repositories.
+
+TODO: Link to chapter
+
+### repositories/
+
+Repository classes for data interaction.
+
+TODO: Link to chapter
+
+### services/
+
+Service classes that contain the business logic.
+
+TODO: Link to chapter
+
+### types/
+
+This is where all typescript type declarations should be placed, along with enums in, for example; a subfolder "enums". Although the exact organisation of this folder depends on personal preference and project.
+
+### util/
+
+[`🔗 Wikipedia: "Facade Pattern"`](https://en.wikipedia.org/wiki/Facade_pattern)
+
+This is the place to put all utility funtcions, functions that can be re-used cross components/files. This to avoid code duplication or to abstract away more complex functionality, see the facade design pattern.
