@@ -37,7 +37,7 @@ Ensuring that each "module", component, or part of code is solely responsible fo
 
 ## File Structure
 
-Below is an overview of the desired file/folder structure within the `src/` folder in VUE projects.
+Below is an overview of the desired file/folder structure within the `src/` folder of your VUE project.
 
 - assets/
 - components/
