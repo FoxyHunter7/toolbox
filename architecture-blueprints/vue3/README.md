@@ -314,6 +314,16 @@ This pattern keeps object creation separate and makes it easy to switch or add n
 
 [`🔗 Wikipedia: "Singleton pattern"`](https://en.wikipedia.org/wiki/Singleton_pattern)
 
+The Singleton Pattern ensures that only one instance of a class exists. In this architecture:
+
+- `ServiceFactory` and `RepositoryFactory` make sure there is only one instance of each service and repository.
+- For example, `ServiceFactory` always returns the same EventService instance.
+
+**Advantages:**
+
+- Reduce memory usage by reusing the same instance.
+- Prevents problems caused by having multiple instances, such as inconsistent data.
+
 ### Dependency Injection
 
 [`🔗 Wikipedia: "Dependency injection"`](https://en.wikipedia.org/wiki/Dependency_injection)
