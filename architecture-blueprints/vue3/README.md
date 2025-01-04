@@ -342,6 +342,16 @@ The Singleton Pattern ensures that only one instance of a class exists. In this 
 
 ### Lazy Initialization
 
+**Lazy Initialization** delays the creation of an object until it is needed, which helps optimise performance and resource usage. In this architecture:
+
+- `RepositoryFactory` and `ServiceFactory` only create objects when their methods are called, saving resources.
+- repositories & services are stored, only created when request for the first time.
+
+**Advantages:**
+
+- Saves memory by not creating unused objects.
+- Improved startup time.
+
 [`🔗 Wikipedia: "Lazy initialization"`](https://en.wikipedia.org/wiki/Lazy_initialization)
 
 ### Chain Of Responibility (Optional)
