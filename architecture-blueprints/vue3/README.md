@@ -253,7 +253,30 @@ export class JSONEvenetRepository implements IEventRepository {
 
 Service classes contain the business logic and interact with repositories to retrieve or manipulate data. The creation of these services are done using the ServiceFactory, under no circomstances should you start manually creating instances of these.
 
-TODO: add code examples.
+```ts
+// EventService.ts --example--
+
+import { IEventRepository } from '@/repositories/IEventRepository';
+
+export class EventService {
+  private repository: IEventRepository;
+
+  constructor(repository: IEventRepository) {
+    this.repository = repository;
+  }
+
+  async getEventList() {
+    const events = await this.repository.getEvents();
+    // Process events (e.g., sort, filter)
+    return events;
+  }
+
+  async createEvent(event: any) {
+    await this.repository.saveEvent(event);
+    // Add further logic for event creation if necessary
+  }
+}
+```
 
 ### types/
 
