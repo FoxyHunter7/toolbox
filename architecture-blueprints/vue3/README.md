@@ -328,6 +328,18 @@ The Singleton Pattern ensures that only one instance of a class exists. In this 
 
 [`🔗 Wikipedia: "Dependency injection"`](https://en.wikipedia.org/wiki/Dependency_injection)
 
+**Dependency Injection** is a way to give a class the dependencies it needs instead of that class creating them. In this architecture:
+
+- `ServiceFactory` provides the required repository to the service when it's created.
+- This makes it easy to change wich repository is used without modifying the service.
+
+**Advantages:**
+
+- Real dependencies can be replaced by fake ones, in testing.
+- Increases flexibility, as we can swap out dependencies without changing the code that uses them.
+- Helps follow the Dependency Inversion Principle, where high-level code doesn’t depend on low-level code.
+  - [`🔗 Wikipedia: "Dependency inversion principle"`](https://en.wikipedia.org/wiki/Dependency_inversion_principle)
+
 ### Lazy Initialization
 
 [`🔗 Wikipedia: "Lazy initialization"`](https://en.wikipedia.org/wiki/Lazy_initialization)
