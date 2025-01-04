@@ -95,18 +95,18 @@ import { RepositoryFactory } from '@/factories/RepositoryFactory';
 import { EventRepositoryImplementations } from '@/types/enums/repositories/EventRepositryImplementations'
 
 export class ServiceFactory {
-    private static eventService: EventService;
+  private static eventService: EventService;
 
-    // Singleton pattern to ensure there's only one instance of EventService
-    public static getEventService(): EventService {
-        if (!this.eventService) {
-            this.eventService = new EventService(
-                // Get the repository based on a predefined choice (e.g., API)
-                RepositoryFactory.getEventRepository(EventRepositoryImplementations.API)
-            );
-        }
-        return this.eventService;
+  // Singleton pattern to ensure there's only one instance of EventService
+  public static getEventService(): EventService {
+    if (!this.eventService) {
+      this.eventService = new EventService(
+        // Get the repository based on a predefined choice (e.g., API)
+        RepositoryFactory.getEventRepository(EventRepositoryImplementations.API)
+      );
     }
+    return this.eventService;
+  }
 }
 ```
 
@@ -118,27 +118,27 @@ import { RepositoryFactory } from '@/factories/RepositoryFactory';
 import { EventRepositoryImplementations } from '@/types/enums/repositories/EventRepositryImplementations';
 
 export class ServiceFactory {
-    private static eventService: EventService;
+  private static eventService: EventService;
 
-    // Singleton pattern to ensure there's only one instance of EventService
-    public static getEventService(): EventService {
-        if (!this.eventService) {
-            this.eventService = new EventService(
-                // Dynamically decide which repository to use based on some logic
-                RepositoryFactory.getEventRepository(getEventRepositoryImplementation())
-            );
-        }
-        return this.eventService;
+  // Singleton pattern to ensure there's only one instance of EventService
+  public static getEventService(): EventService {
+    if (!this.eventService) {
+      this.eventService = new EventService(
+        // Dynamically decide which repository to use based on some logic
+        RepositoryFactory.getEventRepository(getEventRepositoryImplementation())
+      );
     }
+    return this.eventService;
+  }
 
-    private static getEventRepositoryImplementation(): EventRepositoryImplementations {
-        // logic to determine which repo implementation to use.
-    }
+  private static getEventRepositoryImplementation(): EventRepositoryImplementations {
+    // logic to determine which repo implementation to use.
+  }
 }
 ```
 
 ```ts
-// RepositoryFactory.ts --Example 1--
+// RepositoryFactory.ts --Example--
 
 import { IEventRepository } from '@/repositories/IEventRepository';
 import { APIEventRepository } from '@/repositories/event-repositories/APIEventRepository';
@@ -146,43 +146,43 @@ import { JSONEventRepository } from '@/repositories/event-repositories/JSONEvent
 import { EventRepositoryImplementations } from '@/types/enums/repositories/EventRepositryImplementations';
 
 export class RepositoryFactory {
-    // Map to store already instantiated repositories (enforces Singleton pattern).
-    private static eventRepositories = new Map<EventRepositoryImplementations, IEventRepository>();
+  // Map to store already instantiated repositories (enforces Singleton pattern).
+  private static eventRepositories = new Map<EventRepositoryImplementations, IEventRepository>();
 
-    // Map to link repository implementations to their respective classes.
-    // The key is the enum value, and the value is the class constructor.
-    private static eventRepositoriesClassMap = {
-        [EventRepositoryImplementations.API]: APIEventRepository,
-        [EventRepositoryImplementations.JSON]: JSONEventRepository
-    };
+  // Map to link repository implementations to their respective classes.
+  // The key is the enum value, and the value is the class constructor.
+  private static eventRepositoriesClassMap = {
+    [EventRepositoryImplementations.API]: APIEventRepository,
+    [EventRepositoryImplementations.JSON]: JSONEventRepository
+  };
 
-    /**
-     * Returns an instance of the requested event repository.
-     * If the repository has already been instantiated, it retrieves the existing instance.
-     * Otherwise, it creates a new instance, stores it, and then returns it.
-     * 
-     * @param implementation - The type of repository to instantiate, specified by the enum.
-     * @returns An instance of the requested repository.
-     * @throws If the specified repository implementation is not found.
-     */
-    public static getEventRepository(implementation: EventRepositoryImplementations): IEventRepository {
-        // Check if the repository instance already exists in the map.
-        if (!this.eventRepositories.has(implementation)) {
-            // Retrieve the repository class constructor from the class map.
-            const RepositoryClass = this.eventRepositoriesClassMap[implementation];
+  /**
+   * Returns an instance of the requested event repository.
+   * If the repository has already been instantiated, it retrieves the existing instance.
+   * Otherwise, it creates a new instance, stores it, and then returns it.
+   * 
+   * @param implementation - The type of repository to instantiate, specified by the enum.
+   * @returns An instance of the requested repository.
+   * @throws If the specified repository implementation is not found.
+   */
+  public static getEventRepository(implementation: EventRepositoryImplementations): IEventRepository {
+    // Check if the repository instance already exists in the map.
+    if (!this.eventRepositories.has(implementation)) {
+      // Retrieve the repository class constructor from the class map.
+      const RepositoryClass = this.eventRepositoriesClassMap[implementation];
 
-            // If no class is found for the requested implementation, throw an error.
-            if (!RepositoryClass) {
-                throw new Error(`Repository implementation: ${implementation} not found.`);
-            }
+      // If no class is found for the requested implementation, throw an error.
+      if (!RepositoryClass) {
+        throw new Error(`Repository implementation: ${implementation} not found.`);
+      }
 
-            // Instantiate the repository and store it in the map.
-            this.eventRepositories.set(implementation, new RepositoryClass());
-        }
-
-        // Retrieve and return the stored repository instance.
-        return this.eventRepositories.get(implementation)!;
+      // Instantiate the repository and store it in the map.
+      this.eventRepositories.set(implementation, new RepositoryClass());
     }
+
+    // Retrieve and return the stored repository instance.
+    return this.eventRepositories.get(implementation)!;
+  }
 }
 ```
 
