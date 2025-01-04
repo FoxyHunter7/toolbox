@@ -23,7 +23,6 @@ It is designed to scale, stay maintainable, and support testing by clearly separ
     - [Singleton Pattern](#singleton-pattern)
     - [Dependency Injection](#dependency-injection)
     - [Lazy Initialization](#lazy-initialization)
-    - [Chain Of Responibility (Optional)](#chain-of-responibility-optional)
 
 ## Best Practices
 
@@ -133,6 +132,7 @@ export class ServiceFactory {
 
   private static getEventRepositoryImplementation(): EventRepositoryImplementations {
     // logic to determine which repo implementation to use.
+    // Advised to mind the chain of responsibility pattern should this logic rely on something repo specific.
   }
 }
 ```
@@ -353,7 +353,3 @@ The Singleton Pattern ensures that only one instance of a class exists. In this 
 - Improved startup time.
 
 [`🔗 Wikipedia: "Lazy initialization"`](https://en.wikipedia.org/wiki/Lazy_initialization)
-
-### Chain Of Responibility (Optional)
-
-[`🔗 Wikipedia: `]()
