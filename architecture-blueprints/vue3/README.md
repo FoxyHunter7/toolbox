@@ -190,7 +190,64 @@ export class RepositoryFactory {
 
 Repositoriy classes handle data interaction, Each repository should have an interface followed by each implementation of that interface.
 
-TODO: add code examples.
+```ts
+// EventRepository.ts --Example--
+
+import type { event } from '@/types/event';
+
+export interface IEventRepository {
+  getEvents(): Promise<event[]>;
+  saveEvent(event: event): Promise<void>;
+}
+```
+
+```ts
+// APIEventRepository.ts --example--
+
+import { IEventRepository } from '@/repositories/IEventRepository';
+import type { event } from '@/types/event';
+
+export class APIEventRepository implements IEventRepository {
+  async getEvents(): Promise<event[]> {
+    // Fetch events from an API endpoint
+    const response = await fetch('https://api.example.com/events');
+    return response.json();
+  }
+
+  async saveEvent(event: event): Promise<void> {
+    // Save event via the API
+    await fetch('https://api.example.com/events', {
+      method: 'POST',
+      body: JSON.stringify(event),
+    });
+  }
+}
+```
+
+```ts
+// JSONEventRepository.ts --example--
+
+import { IEventRepository } from '@/repositories/IEventRepository';
+import type { event } from '@/types/event';
+
+export class JSONEvenetRepository implements IEventRepository {
+  async getEvents(): Promise<event[]> {
+    // Simulate fetching events from a local JSON file
+    const response = await fetch('/assets/events.json');
+    return response.json();
+  }
+
+  async saveEvent(event: event): Promise<void> {
+    // Simulate saving event to a local JSON file
+    const events = await this.getEvents();
+    events.push(event);
+    await fetch('/assets/events.json', {
+      method: 'POST',
+      body: JSON.stringify(events),
+    });
+  }
+}
+```
 
 ### services/
 
