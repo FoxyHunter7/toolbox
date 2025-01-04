@@ -296,6 +296,20 @@ Below you can find an overview of the design patterns which are the pillars of t
 
 [`🔗 Wikipedia: "Factory method pattern"`](https://en.wikipedia.org/wiki/Factory_method_pattern)
 
+The **Factory Pattern** provides a way to create objects without specifying the exact class of object that will be created. In this architecture:
+
+- The `RepositoryFactory` is responsible for creating repository instances.
+- The `ServiceFactory` handles the creation of services, deciding which repository to inject into the service's constructor.
+
+This pattern keeps object creation separate and makes it easy to switch or add new implementations without changing the rest of the code.
+
+**Advantages:**
+
+- Simplifies how objects are created.
+- Makes the code flexible and easy to extend.
+- Follow the Open-closed Principle, meaning the code can be extended without chaning existing code.
+  - [`🔗 Wikipedia: "Open-closed principle"`](https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle)
+
 ### Singleton Pattern
 
 [`🔗 Wikipedia: "Singleton pattern"`](https://en.wikipedia.org/wiki/Singleton_pattern)
