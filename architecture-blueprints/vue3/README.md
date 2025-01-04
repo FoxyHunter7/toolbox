@@ -23,6 +23,7 @@ It is designed to scale, stay maintainable, and support testing by clearly separ
     - [Singleton Pattern](#singleton-pattern)
     - [Dependency Injection](#dependency-injection)
     - [Lazy Initialization](#lazy-initialization)
+  - [Additional Considerations](#additional-considerations)
 
 ## Best Practices
 
@@ -353,3 +354,7 @@ The Singleton Pattern ensures that only one instance of a class exists. In this 
 - Improved startup time.
 
 [`🔗 Wikipedia: "Lazy initialization"`](https://en.wikipedia.org/wiki/Lazy_initialization)
+
+## Additional Considerations
+
+Theoretically, in a project with many complex repositories, lazy loading of repository imports in the RepositoryFactory could improve performance. However, this approach would significantly increase cognitive complexity, so it has been deliberately avoided in this architecture to maintain clarity and simplicity.
