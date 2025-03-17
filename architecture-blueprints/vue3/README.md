@@ -338,7 +338,7 @@ The Singleton Pattern ensures that only one instance of a class exists. In this 
 
 - Real dependencies can be replaced by fake ones, in testing.
 - Increases flexibility, as we can swap out dependencies without changing the code that uses them.
-- Helps follow the Dependency Inversion Principle, where high-level code doesn’t depend on low-level code.
+- Helps follow the Dependency Inversion Principle, where high-level code doesn't depend on low-level code.
   - [`🔗 Wikipedia: "Dependency inversion principle"`](https://en.wikipedia.org/wiki/Dependency_inversion_principle)
 
 ### Lazy Initialization
