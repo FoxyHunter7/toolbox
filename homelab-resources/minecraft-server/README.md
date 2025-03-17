@@ -41,3 +41,23 @@ alongside the status of the system service.
 WIP...
 
 Sorry, I have yet to write this part
+
+```s
+[Unit]
+Description=Minecraft Server
+After=network.target
+StartLimitBurst=6
+StartLimitIntervalSec=60
+
+[Service]
+User=minecraft
+WorkingDirectory=/opt/minecraft
+ExecStart=/opt/minecraft/runner.sh start
+ExecStop=/opt/rminecraft/runner.sh stop
+Restart=always
+RestartSec=10
+SuccessExitStatus=0
+
+[Install]
+WantedBy=multi-user.target
+```
