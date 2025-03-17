@@ -1,6 +1,6 @@
 # DevOps-Kit
 
-A curated collection of blueprints, architectures, scripts, and other resources I’ve developed and refined over the years.
+A curated collection of blueprints, architectures, scripts, and other resources I've developed and refined over the years.
 
 - [DevOps-Kit](#devops-kit)
   - [Architecture Blueprints](#architecture-blueprints)
@@ -8,7 +8,7 @@ A curated collection of blueprints, architectures, scripts, and other resources 
 
 ## Architecture Blueprints
 
-This section contains architectural blueprints for various technology stacks. They reflect my personal preferences and the approaches I’ve found to be most effective, based on my experience and research into design patterns.
+This section contains architectural blueprints for various technology stacks. They reflect my personal preferences and the approaches I've found to be most effective, based on my experience and research into design patterns.
 
 > **Important Note**: These blueprints are not intended to be definitive solutions or the "one best way" to do things. They reflect my personal preference & ideals.
 
