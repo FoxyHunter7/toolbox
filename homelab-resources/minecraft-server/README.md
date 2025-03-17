@@ -11,7 +11,7 @@ dynamic solution which can meet all needs.
 
 ### Alerting
 
-- Discord webhook support *(or any webhook in similar format)*
+- Webhook support
 - In game alerts pre-shutdown or potential out of RAM issues.
 
 ![discord webhook notifications](readme-img/discord-webhook.png)
