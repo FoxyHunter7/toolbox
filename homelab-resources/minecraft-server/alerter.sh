@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCRIPT_DIR=$(dirname -- "$0")
-SENDERS=("$SCRIPT_DIR/webhook/embed.sh")
+SENDERS=("$SCRIPT_DIR/webhook/discord-embed.sh")
 
 # Decimal Colours
 GREEN=65280
