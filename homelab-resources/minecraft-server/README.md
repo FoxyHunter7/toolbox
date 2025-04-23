@@ -1,11 +1,12 @@
 # Minecraft Dedicated Server
 
-This repo contains a collection of files / custom scripts I use when hosting
-a Minecraft server.
+This folder contains a collection of files / custom scripts
+I use when hosting a Minecraft server.
 
 I prefer to have things lightweight without sacrificing on
-functionality, maintainability or usability. These scripts are my approach at a
-dynamic solution which can meet all needs.
+functionality, maintainability or usability.
+These scripts are my approach at a dynamic solution 
+which can meet all needs.
 
 ## Features
 
