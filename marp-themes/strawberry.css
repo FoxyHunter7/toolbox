@@ -7,11 +7,6 @@ section {
     color: #17090a;
 }
 
-section:has(h1) {
-    text-align: center;
-    font-weight: bold;
-}
-
 section.right-align {
     text-align: right;
 }
