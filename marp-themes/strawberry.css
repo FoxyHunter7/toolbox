@@ -20,6 +20,13 @@ section.left-align {
 section.center-align {
     text-align: center;
 }
+section.chapter {
+    background-color: #db7076;
+}
+section.chapter h2 {
+    text-transform: uppercase;
+    font-weight: bold;
+}
 
 h1 {
     color: #c4434a;
