@@ -1,0 +1,46 @@
+/* @theme custom-theme */
+
+@import 'default';
+
+section {
+    background-color: #fbf4f5;
+    color: #17090a;
+}
+
+section:has(h1) {
+    text-align: center;
+    font-weight: bold;
+}
+
+section.right-align {
+    text-align: right;
+}
+section.left-align {
+    text-align: left;
+}
+section.center-align {
+    text-align: center;
+}
+
+h1 {
+    color: #c4434a;
+}
+
+table tr:nth-child(even) {
+    background-color:#f8d2d3;
+}
+
+table th {
+    background-color: #db7076;
+}
+
+section footer {
+    color: #e09296;
+    font-weight: normal;
+    font-style: italic;
+}
+
+section header {
+    color: #e09296;
+    font-weight: normal;
+}

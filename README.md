@@ -1,12 +1,13 @@
-# DevOps-Kit
+# Foxy's Toolbox
 
-A curated collection of blueprints, architectures, scripts, and other resources I've developed and refined over the years.
+A repo containing various bits & bobs from architectures & blueprints for myself, to things I make & use that don't stand on their own. Such as marp-themes, scripts, ...
 
-- [DevOps-Kit](#devops-kit)
+- [Foxy's Toolbox](#foxys-toolbox)
   - [Homelab Resources](#homelab-resources)
     - [Minecraft Server](#minecraft-server)
   - [Architecture Blueprints](#architecture-blueprints)
     - [Vue3](#vue3)
+  - [Marp Themes](#marp-themes)
 
 ## Homelab Resources
 
@@ -38,3 +39,9 @@ This section contains architectural blueprints for various technology stacks. Th
 This architecture improves scalability, maintainability, and testability by separating data management (repositories) from business logic (services). With services and repositories managed through dedicated factories, updates and testing are easier. Keeping the structure modular and flexible ensures the project remains easy to manage and scale without disrupting functionality.
 
 This architecture is ideal for larger, more complex Vue projects, where the added structure helps to keep everything organised. For smaller projects, a simpler approach may be more appropriate.
+
+## Marp Themes
+
+[`📁 𝗚𝗢𝗧𝗢⠀`](./marp-themes/)
+
+Marp themes I made & use *(these are mostly slight alterations or expansions on the default marp theme.)*
