@@ -20,13 +20,22 @@ section.left-align {
 section.center-align {
     text-align: center;
 }
-section.chapter {
+section.chapter, section.chapter-right, section.chapter-left {
     background-color: #db7076;
 }
-section.chapter h2 {
+section.chapter h2, section.chapter-right h2, section.chapter-left h2 {
     color: white;
     text-transform: uppercase;
     font-weight: bold;
+}
+section.chapter {
+    text-align: center;
+}
+section.chapter-right {
+    text-align: right;
+}
+section.chapter-left {
+    text-align: left;
 }
 
 h1 {
