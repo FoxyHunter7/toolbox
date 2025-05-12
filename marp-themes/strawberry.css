@@ -7,6 +7,10 @@ section {
     color: #17090a;
 }
 
+section:has(h1) footer {
+    display: none;
+}
+
 section.right-align {
     text-align: right;
 }
