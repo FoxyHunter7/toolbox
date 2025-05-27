@@ -117,8 +117,8 @@ StartLimitIntervalSec=60
 [Service]
 User=minecraft
 WorkingDirectory=/opt/minecraft
-ExecStart=/opt/minecraft/runner.sh start
-ExecStop=/opt/rminecraft/runner.sh stop
+ExecStart=/opt/minecraft-server/runner.sh start
+ExecStop=/opt/rminecraft-server/runner.sh stop
 Restart=always
 RestartSec=10
 SuccessExitStatus=0
