@@ -18,7 +18,7 @@ send_actionbar_title() {
 }
 
 start_server() {
-    tmux new-session -d -s minecraft-server "/usr/bin/java -Xmx6G -Xms4G -jar /opt/minecraft/server.jar nogui"
+    tmux new-session -d -s minecraft-server "/usr/bin/java -Xmx6G -Xms4G -jar /opt/minecraft-server/server.jar nogui"
 }
 
 stop_server() {
