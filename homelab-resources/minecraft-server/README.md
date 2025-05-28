@@ -226,3 +226,17 @@ To see the full detailed log of the system service (not minecraft), use journalc
 ```shell
 sudo journalctl -xeu minecraft-server.service
 ```
+
+If you need to access server logs or enter the server terminal for debug reasons you'll have to switch to the minecraft user:
+
+```shell
+sudo su - minecraft
+```
+
+Now you can access the log files or enter the minecraft server's terminal using:
+
+```shell
+tmux attach -t minecraft-server
+```
+
+You can exit using `ctrl` + `b` followed by `d` _(for detach)_
