@@ -124,11 +124,29 @@ Below some sources which may help you in this step:
 
 ### Add automation scripts _(from this repo)_
 
-Now you can add the scripts from this repo
+Now you can add the scripts from this repo.
+
+Make sure all scripts are executable _(if you haven't added any scripts yourself)_, simply run:
+
+```shell
+chmod +x *.sh
+```
 
 > [!WARNING]
-> I still have to add support for a `.env` file in which you can configure certain aspects of the server.  
-> Until then, I advise to wait using these scripts.
+> This will make all files ending with `.sh` executable.
+
+Alternatibly make every file executable seperatly:
+
+```shell
+chmod +x filename.sh
+```
+
+Set the server-address, java params & desired alerters in: `runner-config.sh`.  
+An alerter could look like: 
+
+```shell
+ALERTER_SENDERS=("$SCRIPT_DIR/webhook/discord-embed.sh")
+```
 
 ### Keeping it alive (systemd)
 
@@ -137,7 +155,14 @@ it won't attempt to restart on a crash, neither would it auto-start after a mach
 
 To accomplish this, we'll write a systemd service:
 
-#### **1.** Create minecraft-server.service
+#### **1.** Exit minecraft user's shell
+
+To write the systemd service, we'll need sudo access.
+We'll exit back to the account with which you logged into your linux-machine.
+
+Simply write `exit` to exit out of the minecraft user's shell.
+
+#### **2.** Create minecraft-server.service
 
 The command below will create the systemd service file for the minecraft-server.
 
@@ -171,7 +196,7 @@ WantedBy=multi-user.target
 EOF
 ```
 
-#### **2.** Enable the service
+#### **3.** Enable the service
 
 Make sure systemd sees your new servcice file, this may not be needed, but is generally considered best-practice.
 
