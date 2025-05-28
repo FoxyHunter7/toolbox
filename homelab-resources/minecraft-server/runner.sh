@@ -5,6 +5,7 @@ SCRIPT_DIR=$(dirname -- "$0")
 source "$SCRIPT_DIR/alerter.sh"
 source "$SCRIPT_DIR/logger.sh"
 source "$SCRIPT_DIR/game-interactor.sh"
+source "$SCRIPT_DIR/runner-config.sh"
 
 MEM_HIGH=0
 MEM_CRIT=0
@@ -91,7 +92,7 @@ memory_check() {
 check_network() {
     ping -c 4 1.1.1.1 &>/dev/null
     if [ $? -eq 0 ]; then
-        nslookup your.server.address >/dev/null 2>&1
+        nslookup $SERVER_ADDRESS >/dev/null 2>&1
         if [[ $? -ne 0 ]]; then
             log_warn "DNS resolution not ready"
             return 1
@@ -103,7 +104,7 @@ check_network() {
 
     ping -c 4 8.8.8.8 &>/dev/null
     if [ $? -eq 0 ]; then
-        nslookup your.server.address >/dev/null 2>&1
+        nslookup $SERVER_ADDRESS >/dev/null 2>&1
         if [[ $? -ne 0 ]]; then
             log_warn "DNS resolution not ready"
             return 1
