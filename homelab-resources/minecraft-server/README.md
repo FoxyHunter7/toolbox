@@ -200,4 +200,4 @@ To see the full detailed log of the system service (not minecraft), use journalc
 
 ```shell
 sudo journalctl -xeu minecraft-server.service
-``
+```
