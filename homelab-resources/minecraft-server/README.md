@@ -87,15 +87,14 @@ sudo dnf install java-21-openjdk
 
 ### Installing the server
 
-**1.** Switch to the minecraft user
+#### **1.** Switch to the minecraft user
 
 ```shell
 sudo su - minecraft
 ```
 
-**2.**
+#### **2.** Download the minecraft: java edition server. 
 
-Download the minecradt: java edition server.  
 https://www.minecraft.net/en-us/download/server
 
 You can do so using wget, eg:
@@ -103,11 +102,55 @@ You can do so using wget, eg:
 wget https://piston-data.mojang.com/v1/objects/e6ec2f64e6080b9b5d9b471b291c33cc7f509733/server.jar
 ```
 
-WIP...
+> [!NOTE]
+> At this point, you may be installing `forge`, `neoforge`, `fabrice`, ... or other modded server runtimes.
+> This documentation does not cover modded specifics, although it's important that the jar file to run the server is called `server.jar`.
+> Typically on modded servers you'd place the mod files in a folder named: `mods`
 
-Sorry, I still have to finish writing this guide, it will be completed someday in the future.
+#### **3.** Accepting the EULA
 
-```s
+run the `run.sh` script once, this will put in place some more files such as the `server.proprties` and create the `eula.txt`, which you must edit and set to `eula=true`.
+
+### Configure the server
+
+Now is the perfect time to customise and configure the server. Add a server-icon, configure `server.properties`, import an already existing world, ...
+
+Below some sources which may help you in this step:
+- https://minecraft.fandom.com/wiki/Server.properties
+- https://mctools.org/motd-creator
+
+> [!TIP]
+> A server icon can be set by adding an image of 64x64 named: `server-icon.png`
+
+### Add automation scripts _(from this repo)_
+
+Now you can add the scripts from this repo
+
+> [!WARNING]
+> I still have to add support for a `.env` file in which you can configure certain aspects of the server.  
+> Until then, I advise to wait using these scripts.
+
+### Keeping it alive (systemd)
+
+Lastly we must keep the server alive, although the tmux instance already makes it so it keeps running in the background,
+it won't attempt to restart on a crash, neither would it auto-start after a machine reboot.
+
+To accomplish this, we'll write a systemd service:
+
+#### **1.** Create minecraft-server.service
+
+The command below will create the systemd service file for the minecraft-server.
+
+Configured to:
+- automatically restart the server on failure,
+- limit restarts to 6 within a 60-second window,
+- halt automatic restarts if that limit is exceeded, requiring manual intervention,
+- avoid rapid crash loops and reduce system strain,
+- prevent endless restart cycles after repeated failures.
+
+
+```shell
+sudo tee /etc/systemd/system/minecraft-server.service <<EOF
 [Unit]
 Description=Minecraft Server
 After=network.target
@@ -118,11 +161,43 @@ StartLimitIntervalSec=60
 User=minecraft
 WorkingDirectory=/opt/minecraft-server
 ExecStart=/opt/minecraft-server/runner.sh start
-ExecStop=/opt/rminecraft-server/runner.sh stop
+ExecStop=/opt/minecraft-server/runner.sh stop
 Restart=always
 RestartSec=10
 SuccessExitStatus=0
 
 [Install]
 WantedBy=multi-user.target
+EOF
 ```
+
+#### **2.** Enable the service
+
+Make sure systemd sees your new servcice file, this may not be needed, but is generally considered best-practice.
+
+```shell
+sudo systemctl daemon-reload
+```
+
+Enable the service. _(this won't run it yet, but enables it, so it will run on boot)_
+
+```shell
+sudo systemctl enable minecraft-server.service
+```
+
+### Wrapping up
+
+Now that everything is in place, you can start the server by running:
+
+```shell
+sudo systemctl start minecraft-server.service
+```
+
+To stop or restart the server you can write `stop` or `restart` instead of `start`.  
+You can also write `status`, to see the status of the server.
+
+To see the full detailed log of the system service (not minecraft), use journalctl:
+
+```shell
+sudo journalctl -xeu minecraft-server.service
+``
