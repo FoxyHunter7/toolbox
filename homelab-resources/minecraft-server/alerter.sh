@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCRIPT_DIR=$(dirname -- "$0")
-SENDERS=("$SCRIPT_DIR/webhook/discord-embed.sh")
+source "$SCRIPT_DIR/runner-config.sh"
 
 # Decimal Colours
 GREEN=65280
@@ -15,7 +15,7 @@ send() {
     local description="$2"
     local decimal_colour="$3"
 
-    for sender in "${SENDERS[@]}"; do
+    for sender in "${ALERTER_SENDERS[@]}"; do
         "$sender" "$title" "$description" "$decimal_colour"
     done
 }
