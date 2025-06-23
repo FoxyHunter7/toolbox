@@ -47,21 +47,7 @@ memory_check() {
     local system_used_mem
     system_used_mem=$(free -m | awk 'NR==2{printf "%d", $3*100/$2 }')
 
-    if [[ $system_used_mem -ge 80 ]]; then
-        if [[ $MEM_HIGH -eq 0 ]]; then
-            log_warn "High system memory usage: ${system_used_mem}"
-            send_chat_server_msg "High server memory usage: ${system_used_mem}%" "If this happens frequently, contact the server admin."
-
-            MEM_HIGH=1
-        fi
-    elif [[ $system_used_mem -ge 90 ]]; then
-        if [[ $MEM_CRIT -eq 0 ]]; then
-            log_warn "Critical system memory usage: ${system_used_mem}"
-            send_chat_server_msg "Critically high memory usage: ${system_used_mem}%" "memory intensive tasks include: terrain generation, having many chunks loaded at once, too many running complicated redstone farms, ..."
-
-            MEM_CRIT=1
-        fi
-    elif [[ $system_used_mem -ge 97 ]]; then
+    if [[ $system_used_mem -ge 95 ]]; then
         log_crit "System memory usage exceeding safe operational parameters: ${system_used_mem}"
         send_chat_server_msg "Memory usage exceeds safe operational prarameters, attempting graceful restart before imminent crash." "Automatic restart in 5 seconds!!"
         send_actionbar_title "Auto restart in 5sec, mem usage critical!"
@@ -72,10 +58,26 @@ memory_check() {
 
         sleep 1
         stop_server
-        alert_server_stop_unplanned "System memory usage exceeded 97%, attempting graceful restart & recovery."
+        alert_server_stop_unplanned "System memory usage exceeded 97%, attempted graceful restart & recovery."
 
         sleep 3
         start
+        MEM_HIGH=0
+        MEM_CRIT=0
+    elif [[ $system_used_mem -ge 90 ]]; then
+        if [[ $MEM_CRIT -eq 0 ]]; then
+            log_warn "Critical system memory usage: ${system_used_mem}"
+            send_chat_server_msg "Critically high memory usage: ${system_used_mem}%" "memory intensive tasks include: terrain generation, having many chunks loaded at once, too many running complicated redstone farms, ..."
+
+            MEM_CRIT=1
+        fi
+    elif [[ $system_used_mem -ge 80 ]]; then
+        if [[ $MEM_HIGH -eq 0 ]]; then
+            log_warn "High system memory usage: ${system_used_mem}"
+            send_chat_server_msg "High server memory usage: ${system_used_mem}%" "If this happens frequently, contact the server admin."
+
+            MEM_HIGH=1
+        fi
     else
         if [[ $system_used_mem -lt 80 ]]; then
             if [[ $MEM_HIGH -eq 1 || $MEM_CRIT -eq 1 ]]; then
