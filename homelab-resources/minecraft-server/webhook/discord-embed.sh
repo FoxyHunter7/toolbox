@@ -10,6 +10,9 @@ if [ ! -f "$urls_file" ]; then
     exit 1
 fi
 
+source "$SCRIPT_DIR/../runner-config.sh"
+ICON_URL="https://eu.mc-api.net/v3/server/favicon/$SERVER_ADDRESS"
+
 discord_urls=()
 while IFS= read -r line || [ -n "$line" ]; do
     discord_urls+=("$line")
@@ -34,7 +37,8 @@ payload="{
             \"description\": \"$2\",
             \"color\": $3,
             \"author\": {
-                \"name\": \"$(hostname -f)\"
+                \"name\": \"$SERVER_ADDRESS\",
+                \"icon_url\": \"$ICON_URL\"
             },
             \"fields\": $FIELDS
         }
