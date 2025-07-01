@@ -1,6 +1,41 @@
 #!/bin/bash
 
 SCRIPT_DIR=$(dirname -- "$0")
+source "$SCRIPT_DIR/runner-config.sh"
+
+kick_all() {
+    local reason="$1"
+    tmux send-keys -t minecraft-server "minecraft:kick @a $reason" Enter
+}
+
+send_chat_server_msg() {
+    local description=$1
+    local subtext=$2
+
+    tmux send-keys -t minecraft-server "minecraft:tellraw @a [\"\",{\"text\":\"!! SERVER INFO !!:\",\"bold\":true,\"color\":\"gold\",\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[{\"text\":\"Information & alerts coming directly from the server.\",\"color\":\"white\"}]}},{\"text\":\"\\n$description\",\"color\":\"white\"},{\"text\":\"\\n$subtext\",\"italic\":true,\"color\":\"gray\"}]" Enter
+}
+
+send_actionbar_title() {
+    local text="$1"
+    tmux send-keys -t minecraft-server "minecraft:title @a actionbar {\"text\":\"$text\"}" Enter
+}
+
+start_server() {
+    tmux new-session -d -s minecraft-server "/usr/bin/java -Xmx$JAVA_XMX -Xms$JAVA_XMS -jar /opt/projectf/spigot-1.21.6.jar nogui"
+}
+
+stop_server() {
+    tmux send-keys -t minecraft-server "stop" Enter
+    log_info "Waiting for server to shut down completely..."
+    while server_running; do
+        sleep 1
+    done
+    log_info "Server shutdown confirmed."
+}
+minecraft@projectf-mcserver:~$ cat runner.sh 
+#!/bin/bash
+
+SCRIPT_DIR=$(dirname -- "$0")
 
 source "$SCRIPT_DIR/alerter.sh"
 source "$SCRIPT_DIR/logger.sh"
@@ -11,10 +46,14 @@ MEM_HIGH=0
 MEM_CRIT=0
 
 start() {
-    start_server
+    if server_running; then
+        log_warn "Start signal received but the server was already running, is this a mistake?"
+    else
+        start_server
 
-    alert_server_start
-    log_info "Server Startup, tmux session 'minecraft-server' started"
+        alert_server_start
+        log_info "Server Startup, tmux session 'minecraft-server' started"
+    fi
 }
 
 server_running() {
@@ -48,7 +87,7 @@ memory_check() {
     system_used_mem=$(free -m | awk 'NR==2{printf "%d", $3*100/$2 }')
 
     if [[ $system_used_mem -ge 95 ]]; then
-        log_crit "System memory usage exceeding safe operational parameters: ${system_used_mem}"
+        log_crit "System memory usage exceeding safe operational parameters: ${system_used_mem}% system memory usage"
         send_chat_server_msg "Memory usage exceeds safe operational prarameters, attempting graceful restart before imminent crash." "Automatic restart in 5 seconds!!"
         send_actionbar_title "Auto restart in 5sec, mem usage critical!"
 
@@ -66,14 +105,14 @@ memory_check() {
         MEM_CRIT=0
     elif [[ $system_used_mem -ge 90 ]]; then
         if [[ $MEM_CRIT -eq 0 ]]; then
-            log_warn "Critical system memory usage: ${system_used_mem}"
+            log_warn "Critical system memory usage: ${system_used_mem}% system memory usage"
             send_chat_server_msg "Critically high memory usage: ${system_used_mem}%" "memory intensive tasks include: terrain generation, having many chunks loaded at once, too many running complicated redstone farms, ..."
 
             MEM_CRIT=1
         fi
     elif [[ $system_used_mem -ge 80 ]]; then
         if [[ $MEM_HIGH -eq 0 ]]; then
-            log_warn "High system memory usage: ${system_used_mem}"
+            log_warn "High system memory usage: ${system_used_mem}% system memory usage"
             send_chat_server_msg "High server memory usage: ${system_used_mem}%" "If this happens frequently, contact the server admin."
 
             MEM_HIGH=1
