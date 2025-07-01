@@ -26,4 +26,9 @@ start_server() {
 
 stop_server() {
     tmux send-keys -t minecraft-server "stop" Enter
+    log_info "Waiting for server to shut down completely..."
+    while server_running; do
+        sleep 1
+    done
+    log_info "Server shutdown confirmed."
 }
