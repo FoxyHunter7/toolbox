@@ -1,41 +1,6 @@
 #!/bin/bash
 
 SCRIPT_DIR=$(dirname -- "$0")
-source "$SCRIPT_DIR/runner-config.sh"
-
-kick_all() {
-    local reason="$1"
-    tmux send-keys -t minecraft-server "minecraft:kick @a $reason" Enter
-}
-
-send_chat_server_msg() {
-    local description=$1
-    local subtext=$2
-
-    tmux send-keys -t minecraft-server "minecraft:tellraw @a [\"\",{\"text\":\"!! SERVER INFO !!:\",\"bold\":true,\"color\":\"gold\",\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[{\"text\":\"Information & alerts coming directly from the server.\",\"color\":\"white\"}]}},{\"text\":\"\\n$description\",\"color\":\"white\"},{\"text\":\"\\n$subtext\",\"italic\":true,\"color\":\"gray\"}]" Enter
-}
-
-send_actionbar_title() {
-    local text="$1"
-    tmux send-keys -t minecraft-server "minecraft:title @a actionbar {\"text\":\"$text\"}" Enter
-}
-
-start_server() {
-    tmux new-session -d -s minecraft-server "/usr/bin/java -Xmx$JAVA_XMX -Xms$JAVA_XMS -jar /opt/projectf/spigot-1.21.6.jar nogui"
-}
-
-stop_server() {
-    tmux send-keys -t minecraft-server "stop" Enter
-    log_info "Waiting for server to shut down completely..."
-    while server_running; do
-        sleep 1
-    done
-    log_info "Server shutdown confirmed."
-}
-minecraft@projectf-mcserver:~$ cat runner.sh 
-#!/bin/bash
-
-SCRIPT_DIR=$(dirname -- "$0")
 
 source "$SCRIPT_DIR/alerter.sh"
 source "$SCRIPT_DIR/logger.sh"
